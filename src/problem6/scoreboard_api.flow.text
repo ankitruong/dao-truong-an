@@ -1,0 +1,53 @@
+@startuml Real-Time Score Update with Batch Processing
+
+actor User
+participant "Client App" as Client
+participant "Application Server" as Server
+participant "Batch Queue" as Queue
+participant "Scheduler" as Scheduler
+database Database
+
+entryspacing 0.6
+activate Client
+Client->Server: WebSocket Connection
+activate Server
+Client -> Client: WebSocket Connection Established
+
+User -> Client: User Action (Increase Score)
+activate Client
+Client -> Server: API Call (Update Score)
+
+Server -> Server: Validate API Call
+activate Server
+Server -> Server: Authorized
+alt Authorized
+    Server -> Queue: Enqueue Score Update
+    Queue -> Queue: Store Update Request
+    Server --> Client: Api Response (2xx)
+    deactivate Server
+
+    Scheduler -> Queue: Fetch Batched Updates
+    activate Queue
+    Queue --> Scheduler: Batch of Score Updates
+    Scheduler -> Database: Bulk Update Scores
+    activate Database
+    Database --> Scheduler: Scores Updated
+    Scheduler -> Server: Emit Real-Time Notification
+    Server -> Client: Real-Time Notification (Updated Scores)
+    Client -> Client: Update Scoreboard (Real-Time)
+
+    deactivate Scheduler
+    deactivate Queue
+    deactivate Database
+
+else Unauthorized
+    Server --> Client: 401 Unauthorized
+    deactivate Server
+end
+
+deactivate Client
+deactivate Server
+deactivate Queue
+deactivate Database
+
+@enduml

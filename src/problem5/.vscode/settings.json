@@ -1,0 +1,21 @@
+{
+  "files.autoSave": "onFocusChange",
+  "editor.suggestSelection": "first",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "eslint.format.enable": true,
+  "typescript.preferences.importModuleSpecifier":"non-relative",
+  "[typescript]": {
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "explorer.confirmDelete": false,
+  "window.zoomLevel": 1,
+  "diffEditor.codeLens": true,
+  "editor.tabSize": 2,
+  "editor.formatOnPaste": true,
+  "typescript.format.semicolons": "insert"
+}
